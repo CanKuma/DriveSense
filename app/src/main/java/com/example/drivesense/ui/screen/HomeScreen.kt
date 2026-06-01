@@ -10,12 +10,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.drivesense.ui.component.GPSCard
 import com.example.drivesense.ui.component.SensorCard
 
 @Composable
-fun HomePage(
+fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel()
 ) {
@@ -52,4 +53,10 @@ fun HomePage(
         SensorCard("Gyro")
         SensorCard("IMU")
     }
+}
+
+@Preview
+@Composable
+fun HomeScreenPreview(){
+    HomeScreen()
 }
