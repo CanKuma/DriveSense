@@ -15,6 +15,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.drivesense.ui.component.GPSCard
 import com.example.drivesense.ui.component.SensorCard
 
+/**
+ * It displays sensor cards, requests location permission, and starts GPS updates through ViewModel
+ * once permission is available.
+ */
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -24,25 +28,7 @@ fun HomeScreen(
     val gpsData by viewModel.gpsData.collectAsState()
     val hasLocationPermission by viewModel.hasLocationPermission.collectAsState()
 
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        viewModel.onLocationPermissionResult(granted)
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.checkLocationPermission(context)
-
-        if (!viewModel.isLocationPermissionGranted(context)) {
-            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
-    }
-
-    LaunchedEffect(hasLocationPermission) {
-        if (hasLocationPermission) {
-            viewModel.startGpsUpdates(context.applicationContext)
-        }
-    }
+    LocationPermissionHandler(viewModel = viewModel)
 
     Column(modifier = modifier) {
         GPSCard(
@@ -52,6 +38,40 @@ fun HomeScreen(
 
         SensorCard("Gyro")
         SensorCard("IMU")
+    }
+}
+
+/**
+ * Handles location permission side effects for HomeScreen.
+ *
+ * This composable checks the current permission, launches Android's permission
+ * dialog when needed, and starts GPS updates after permission is granted.
+ */
+@Composable
+private fun LocationPermissionHandler(
+    viewModel: HomeViewModel
+) {
+    val context = LocalContext.current
+    val hasLocationPermission by viewModel.hasLocationPermission.collectAsState()
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        viewModel.onLocationPermissionResult(granted)
+    }
+
+    LaunchedEffect(Unit) {
+        val granted = viewModel.checkLocationPermission(context)
+
+        if (!granted) {
+            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    LaunchedEffect(hasLocationPermission) {
+        if (hasLocationPermission) {
+            viewModel.startGpsUpdates(context.applicationContext)
+        }
     }
 }
 

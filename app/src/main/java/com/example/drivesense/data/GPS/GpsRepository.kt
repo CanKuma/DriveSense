@@ -14,7 +14,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-/*
+/**
  * Repository responsible for reading GPS/location updates from Android
  *
  * Exposes location updates as a Flow of GpsData
@@ -24,7 +24,7 @@ class GpsRepository(
 ) {
     private val TAG = "GpsRepository"
 
-    /*
+    /**
      * Observes high-accuracy location updates about once per second
      *
      * Location Permission must be granted before this function is called
