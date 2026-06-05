@@ -17,12 +17,13 @@ import androidx.compose.ui.unit.sp
 import com.example.drivesense.data.GPS.GpsData
 
 @Composable
-fun GPSCard(
+fun  GPSCard(
     gpsData: GpsData,
-    hasPermission: Boolean
+    hasPermission: Boolean,
+    modifier: Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
@@ -53,5 +54,8 @@ fun GPSCard(
 @Preview
 @Composable
 fun GPSCardPreview(){
-    GPSCard(gpsData = GpsData(), hasPermission = true)
+    GPSCard(
+        gpsData = GpsData(),
+        hasPermission = true,
+        modifier = Modifier)
 }

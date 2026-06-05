@@ -48,7 +48,10 @@ fun AppTopBar(){
 }
 
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    widthDp = 420,
+    heightDp = 934)
 @Composable
 fun GreetingPreview() {
     DriveSenseTheme {

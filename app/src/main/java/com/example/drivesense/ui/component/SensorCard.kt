@@ -18,10 +18,11 @@ fun SensorCard(
     title: String,
     info1: String = "info1",
     info2: String = "info2",
-    info3: String = "info3"
+    info3: String = "info3",
+    modifier: Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(16.dp)
             .fillMaxWidth()
     ) {
@@ -48,5 +49,7 @@ fun SensorCard(
 @Preview
 @Composable
 fun SensorCardPreview(){
-    SensorCard(title = "GPS")
+    SensorCard(
+        title = "GPS",
+        modifier = Modifier)
 }
