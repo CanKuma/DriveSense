@@ -35,9 +35,7 @@ class AccRepository(
                 )
             }
 
-            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-                Unit
-            }
+            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
         }
 
         sensorManager.registerListener(
