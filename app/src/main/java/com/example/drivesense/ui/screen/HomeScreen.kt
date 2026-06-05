@@ -24,9 +24,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel()
 ) {
-    val context = LocalContext.current
     val gpsData by viewModel.gpsData.collectAsState()
     val hasLocationPermission by viewModel.hasLocationPermission.collectAsState()
+    val gyroData by viewModel.gyroData.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.startGyroUpdates(context.applicationContext)
+    }
+
 
     LocationPermissionHandler(viewModel = viewModel)
 
@@ -35,8 +40,12 @@ fun HomeScreen(
             gpsData = gpsData,
             hasPermission = hasLocationPermission
         )
-
-        SensorCard("Gyro")
+        SensorCard(
+            title = "Gyro",
+            info1 = "X: ${gyroData.x}",
+            info2 = "Y: ${gyroData.y}",
+            info3 = "Z: ${gyroData.z}"
+        )
         SensorCard("IMU")
     }
 }
@@ -74,6 +83,7 @@ private fun LocationPermissionHandler(
         }
     }
 }
+
 
 @Preview
 @Composable

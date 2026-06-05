@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.drivesense.data.GPS.GpsData
 import com.example.drivesense.data.GPS.GpsRepository
+import com.example.drivesense.data.Gyro.GyroData
+import com.example.drivesense.data.Gyro.GyroRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,6 +22,23 @@ import kotlinx.coroutines.launch
 class HomeViewModel : ViewModel() {
     private val _gpsData = MutableStateFlow(GpsData())
     val gpsData = _gpsData.asStateFlow()
+    private val _gyroData = MutableStateFlow(GyroData())
+    val gyroData = _gyroData.asStateFlow()
+
+    private var hasStartedGyroUpdates = false
+
+    fun startGyroUpdates(context: Context) {
+        if (hasStartedGyroUpdates) return
+        hasStartedGyroUpdates = true
+
+        viewModelScope.launch {
+            GyroRepository(context)
+                .observeGyroData()
+                .collect { data ->
+                    _gyroData.value = data
+                }
+        }
+    }
 
     private val _hasLocationPermission = MutableStateFlow(false)
     val hasLocationPermission = _hasLocationPermission.asStateFlow()
