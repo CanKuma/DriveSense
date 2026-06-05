@@ -6,6 +6,8 @@ import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.drivesense.data.Accelerator.AccData
+import com.example.drivesense.data.Accelerator.AccRepository
 import com.example.drivesense.data.GPS.GpsData
 import com.example.drivesense.data.GPS.GpsRepository
 import com.example.drivesense.data.Gyro.GyroData
@@ -24,8 +26,11 @@ class HomeViewModel : ViewModel() {
     val gpsData = _gpsData.asStateFlow()
     private val _gyroData = MutableStateFlow(GyroData())
     val gyroData = _gyroData.asStateFlow()
+    private val _accData = MutableStateFlow(AccData())
+    val accData = _accData.asStateFlow()
 
     private var hasStartedGyroUpdates = false
+    private var hasStartedAccUpdates = false
 
     fun startGyroUpdates(context: Context) {
         if (hasStartedGyroUpdates) return
@@ -36,6 +41,19 @@ class HomeViewModel : ViewModel() {
                 .observeGyroData()
                 .collect { data ->
                     _gyroData.value = data
+                }
+        }
+    }
+
+    fun startAccUpdates(context: Context) {
+        if (hasStartedAccUpdates) return
+        hasStartedAccUpdates = true
+
+        viewModelScope.launch {
+            AccRepository(context)
+                .observeAccData()
+                .collect { data ->
+                    _accData.value = data
                 }
         }
     }
