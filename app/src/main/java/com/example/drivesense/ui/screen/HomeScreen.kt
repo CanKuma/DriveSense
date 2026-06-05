@@ -46,15 +46,15 @@ fun HomeScreen(
         )
         SensorCard(
             title = "Gyro",
-            info1 = "X: ${gyroData.x}",
-            info2 = "Y: ${gyroData.y}",
-            info3 = "Z: ${gyroData.z}"
+            info1 = "X: %.2f".format(gyroData.x),
+            info2 = "Y: %.2f".format(gyroData.y),
+            info3 = "Z: %.2f".format(gyroData.z)
         )
         SensorCard(
             title = "Acc",
-            info1 = "X: ${accData.x}",
-            info2 = "Y: ${accData.y}",
-            info3 = "Z: ${accData.z}"
+            info1 = "X: %.2f".format(accData.x),
+            info2 = "Y: %.2f".format(accData.y),
+            info3 = "Z: %.2f".format(accData.z)
         )
     }
 }
